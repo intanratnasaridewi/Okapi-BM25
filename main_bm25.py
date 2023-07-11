@@ -97,11 +97,17 @@ def main(query, document, corpus):
     b = 0.75
     k3=1.2
     Lave = calculate_Lave(corpus)  # Panjang rata-rata dokumen dalam koleksi
+    #kalkulasi idf alternative: intinya kalo gaada kata di dokumen, idfnya ga 0, jadi ga error
     idf_scoresAlter = calculate_idfalternative(query,corpus)
+    #kalkulasi idf standar: kelemahannya kalo query != dokumen manapun, pasti bakal error soalnya ada pembagian 0
     idf_score0 = calculate_idf0(query,corpus)
+    #pake idf alternative dan algortima standar = dia cocok buat query singkat
     scoreAlterstandar=standar_bm25(query, document, k1, b, idf_scoresAlter, Lave)
+    #pake idf alternative dan algortima long = dia cocok buat query panjang
     scoreAlterlong=long_bm25(query, document, k1, b, k3, idf_scoresAlter, Lave)
+    #pake idf standar dan algortima standar = dia cocok buat query singkat
     score0standar=standar_bm25(query, document, k1, b, idf_score0, Lave)
+    #pake idf standar dan algortima long = dia cocok buat query panjang
     score0long=long_bm25(query, document, k1, b, k3, idf_score0, Lave)
 
     return scoreAlterlong
